@@ -6,3 +6,11 @@ channels extend this concept by enabling multiple streams over multiple concurre
 
 We will configure our gRPC connection to support HTTP/2’s long-lived connections so that we'll
 keep our connections alive, healthy, and utilized.
+
+### Technologies
+Project is created with:
+* Java 11
+* SpringBoot 2.7.3
+
+### Author
+* Terence K.
