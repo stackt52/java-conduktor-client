@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package zm.gov.moh.hie.scp.services.grpc;
+
+
+service Conduktor {
+  rpc sendPatientRegistration(Patient) returns (ResponseMessage);
+  rpc sendPrescription (PrescriptionDetail) returns (ResponseMessage);
+  rpc sendDispensation (Dispensation) returns (ResponseMessage);
+  rpc streamPatientRegistrations (FacilityID) returns (stream Patient);
+  rpc streamPrescriptions (FacilityID) returns (stream PrescriptionDetail);
+  rpc streamDispensations (FacilityID) returns (stream Dispensation);
+}
+
+message PrescriptionDetail {
+  string patientUuid = 1;
+  string ArtNumber = 2;
+  string CD4 = 3;
+  string viralLoad = 4;
+  string regimenId = 5;
+  string regimenCode = 6;
+  Vital vitals = 7;
+  Prescription prescription = 8;
+  FacilityID sourceFacility = 9;
+}
+
+message Vital {
+  string height = 1;
+  string heightDateTimeCollected = 2;
+  string weight = 3;
+  string weightDateTimeCollected = 4;
+  string bloodPressure = 5;
+  string bloodPressureDateTimeCollected = 6;
+}
+
+message PrescriptionDrug {
+  string drugCode = 1;
+  double quantityPerDose = 2;
+  string dosageUnit = 3;
+  string frequency = 4;
+  int32 duration = 5;
+}
+
+
+message Prescription {
+  string date = 1;
+  repeated PrescriptionDrug  prescriptionDrugs = 2;
+}
+
+message Dispensation {
+  string patientGuid = 1;
+  string mslDrugId = 2;
+  string artNumber = 3;
+  string hmisCode = 4;
+  string nextVisitDate = 5;
+  string transactionTime = 6;
+  string dispensationDate = 7;
+  string frequency = 8;
+  double quantityDispensed = 9;
+  string unitOfMeasurement = 10;
+  string doseStrength = 11;
+  double unitQuantityPerDose = 12;
+}
+
+message Patient {
+  string registrationDateTime = 1;
+  string dateOfBirth = 2;
+  string patientUuid = 3;
+  string nrcNumber = 4;
+  string firstName = 5;
+  string lastName = 6;
+  string patientID = 7;
+  string sex = 8;
+}
+
+message FacilityID {
+  string uuid = 1;
+  string hmisCode = 2;
+}
+
+message ResponseMessage {
+  enum Status {
+    ACCEPTED = 0;
+    INTERNAL_SERVER_ERROR = 1;
+    BAD_REQUEST = 2;
+  }
+  Status status = 1;
+  string message = 2;
+}
